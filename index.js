@@ -2,12 +2,16 @@ const dotenv = require('dotenv').config()
 const bodyParser = require('body-parser')
 const express = require('express')
 const path = require('path')
-const app =  express()
+
+//routes files
 const router = require('./controller/routes/route')
+const regRouter = require('./controller/routes/register')
+
+const app =  express()
 const conn = require('./model/connection')
 const ejs = require('ejs')
 const port = process.env.PORT
-// const mongoose = require('mongoose')
+const mongoose = require('mongoose')
 
 
 //body parser
@@ -17,18 +21,10 @@ app.use(express.json())
 
 //view
 app.set('view engine','ejs')
+
+//routes
 app.use('/api/user/details',router)
+app.use('/api/user',regRouter)
 
-
-//default route
-// app.get('/', (req, res) => {
-//     let userData = {
-//         name:"Muskaan Sharma",
-//         email:"muskaan.sharma@plutustec.com",
-//         contact:"1234567890",
-//         pass:"admin",
-//         cpass:"admin"
-//     }
-//     res.render('home',userData)
-// })
+//server
 app.listen(port, () =>{console.log(`Listening on port: http://localhost:${port}/`)})

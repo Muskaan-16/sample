@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
         let personName = await People.find()
         res.json(personName)
     } catch (err) {
-        res.send(`Error ${err}`)
+        res.send(`Error get all ${err}`)
     }
 })
 
@@ -20,7 +20,7 @@ router.get('/:id', async (req, res) => {
         // res.json(personName)
         res.render('home',(personName))
     } catch (err) {
-        res.send(`Error ${err}`)
+        res.send(`Error get 1 ${err}`)
     }
 })
 
@@ -36,7 +36,7 @@ router.post('/', async (req, res) => {
         res.json(p1)
         console.log(p1)
     } catch (err) {
-        res.send(`Error: ${err}`)
+        res.send(`Error post: ${err}`)
     }
 
     // let personName = req.body
@@ -52,7 +52,7 @@ router.patch('/:_id', async (req, res) => {
         res.json(p1)
     } catch (err) {
         // console.log(err)
-        res.send(`Error: ${err}`)
+        res.send(`Error patch: ${err}`)
     }
 })
 
@@ -66,7 +66,7 @@ router.put('/:_id', async (req, res) => {
         res.json(p1)
     } catch (err) {
         // console.log(err)
-        res.send(`Error: ${err}`)
+        res.send(`Error put: ${err}`)
     }
 })
 
