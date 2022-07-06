@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const bodyParser = require('body-parser')
-const People = require('../database/sturcture')
+const People = require('../../model/sturcture')
 
 //get all data
 router.get('/', async (req, res) => {
@@ -14,10 +14,11 @@ router.get('/', async (req, res) => {
 })
 
 //get 1 parameterised data
-router.get('/_:id', async (req, res) => {
+router.get('/:id', async (req, res) => {
     try {
         let personName = await People.findById(req.params.id)
-        res.json(personName)
+        // res.json(personName)
+        res.render('home',(personName))
     } catch (err) {
         res.send(`Error ${err}`)
     }
