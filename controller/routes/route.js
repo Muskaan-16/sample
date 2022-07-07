@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const bodyParser = require('body-parser')
+const bcrypt = require('bcryptjs')
 const People = require('../../model/sturcture')
 
 //get all data
@@ -25,33 +26,46 @@ router.get('/:id', async (req, res) => {
 })
 
 //insert data
-router.post('/', async (req, res) => {
-    console.log('req.body', req.body);
-    const person = new People({
-        fname: req.body.fname,
-        lname: req.body.lname
-    })
+router.post('/', async (req, res, next) => {
+
+    // password salt generation
+        const salt10 = await new Promise((resolve, reject)=>{
+            bcrypt.genSalt(10, (err, salt)=>{
+                if(err) reject(err)
+                resolve(salt)
+            })
+        })
+    //password hashing
+        const hashedPassword = await new Promise((resolve, reject)=>{
+            bcrypt.hash(req.body.password, salt10, (err, hash)=>{
+                if(err) reject(err)
+                resolve(hash)
+            })
+        })
+
+        let person = new People({
+            fname: req.body.fname,
+            lname: req.body.lname,
+            email: req.body.email,
+            password: hashedPassword
+        })
+    
     try {
         const p1 = await person.save()
         res.json(p1)
-        console.log(p1)
     } catch (err) {
         res.send(`Error post: ${err}`)
     }
-
-    // let personName = req.body
-    // res.send(personName)
 })
 
 //update data of specified field
 router.patch('/:_id', async (req, res) => {
     try {
         let person = await People.findById(req.params.id)
-        person.lname = req.body.lname
+        person.email = req.body.email
         let p1 = await person.save()
         res.json(p1)
     } catch (err) {
-        // console.log(err)
         res.send(`Error patch: ${err}`)
     }
 })
@@ -65,7 +79,6 @@ router.put('/:_id', async (req, res) => {
         )
         res.json(p1)
     } catch (err) {
-        // console.log(err)
         res.send(`Error put: ${err}`)
     }
 })

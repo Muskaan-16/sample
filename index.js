@@ -18,6 +18,7 @@ const mongoose = require('mongoose')
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json())
 app.use(express.json())
+app.use(express.urlencoded({extended: false}))
 
 //view
 app.set('view engine','ejs')
